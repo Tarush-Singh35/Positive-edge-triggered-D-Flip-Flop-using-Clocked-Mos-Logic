@@ -1,0 +1,40 @@
+* C:\Users\Tarush\eSim-Workspace\D_FF\D_FF.cir
+
+.lib "sky130_fd_pr/models/sky130.lib.spice" tt
+
+xM1  Net-_M1-Pad1_ D_IN VDD VDD sky130_fd_pr__pfet 01v8 w=1 l=0.5		
+xM2  Net-_C1-Pad1_ CLK Net-_M1-Pad1_ VDD sky130_fd_pr__pfet 01v8 w=1 l=0.5		
+xM6  Net-_C1-Pad1_ CLK_BAR Net-_M6-Pad3_ GND sky130_fd_pr__nfet 01v8 w=.42 l=.5		
+xM7  Net-_M6-Pad3_ D_IN GND GND sky130_fd_pr__nfet 01v8 w=.42 l=.5		
+C1  Net-_C1-Pad1_ GND 0.001u		
+xM3  Qm Net-_C1-Pad1_ VDD VDD sky130_fd_pr__pfet 01v8 w=1 l=0.5		
+xM8  Qm Net-_C1-Pad1_ GND GND sky130_fd_pr__nfet 01v8 w=.42 l=.5		
+xM4  Net-_M4-Pad1_ Qm VDD VDD sky130_fd_pr__pfet 01v8 w=1 l=0.5		
+xM5  Net-_C2-Pad1_ CLK_BAR Net-_M4-Pad1_ /VDD sky130_fd_pr__pfet 01v8 w=1 l=0.5		
+xM9  Net-_C2-Pad1_ CLK Net-_M10-Pad1_ GND sky130_fd_pr__nfet 01v8 w=.42 l=.5		
+xM10  Net-_M10-Pad1_ Qm GND GND sky130_fd_pr__nfet 01v8 w=.42 l=.5		
+C2  Net-_C2-Pad1_ GND 0.001u		
+xM11  Qs Net-_C2-Pad1_ VDD VDD sky130_fd_pr__pfet 01v8 w=1 l=0.5		
+xM12  Qs Net-_C2-Pad1_ GND GND sky130_fd_pr__nfet 01v8 w=.42 l=.5		
+U1  Qs Qm D_IN CLK CLK_BAR VDD PORT		
+
+VDD VDD 0 5
+
+* pulse command(Vintial Von Tdelay Trise Tfall Ton Ttotal Ncycles)
+
+Vd0 D_IN 0 pulse(0 5 0s 0s 0s 0.7us 10us)
+Vd0 CLK 0 pulse(0 5 0s 0s 0s 0.5us 10us)
+Vd0 CLK_BAR 0 pulse(5 0 0s 0s 0s 0.5us 10us)
+
+.tran 0.1us 80us
+
+.control
+run
+
+plot V(CLK)
+plot V(Qm)
+plot V(Qs)
+
+.endc
+
+.end
